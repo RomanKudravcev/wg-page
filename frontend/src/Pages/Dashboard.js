@@ -3,6 +3,7 @@ import Navbar from "../Elements/Navbar";
 import ShoppingList from "../Elements/ShoppingList";
 
 export default function Dashboard() {
+  /*
   const [message, setMessage] = useState("");
   const [error, setError] = useState(null);
 
@@ -27,12 +28,12 @@ export default function Dashboard() {
         setError(error);
       });
   }
-
+*/
   return (
     <div>
       <Navbar />
       <div className="flex gap-5 p-5">
-        <div className="flex w-3/12">
+        <div className="flex w-3/12 h-5/6">
           <ShoppingList />
         </div>
       </div>
