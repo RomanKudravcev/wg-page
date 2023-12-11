@@ -4,7 +4,6 @@ import (
 	"log"
 	C "main/controller"
 	"main/db"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -41,16 +40,10 @@ func main() {
     if database == nil {
         log.Fatal("Failed to connect to the database")
     }
-	router.GET("/items", func(c *gin.Context) {
-		items, err := C.FetchItems(database)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		c.JSON(http.StatusOK, items)
-	})
 
-    router.POST("/items", C.PostItem(database))
+	shoppingItem := new(C.ShoppingItemController)
+	router.POST("/items", shoppingItem.Create)
+	router.GET("/items", shoppingItem.All)
 
 	router.Run(":8080")
 }
