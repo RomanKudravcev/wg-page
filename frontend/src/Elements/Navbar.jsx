@@ -1,6 +1,6 @@
 export default function Navbar() {
   return (
-    <header className="flex items-center text-[#8F9EC4] bg-indigo-100 p-2 pr-6  h-[10vh] ">
+    <header className="flex items-center text-[#8F9EC4] bg-indigo-300 p-2 pr-6  h-[10vh] ">
       {/*Logo*/}
       <div className="flex flex-initial items-center h-full w-3/12 ">
         <a href="/dashboard" className=" h-full">
