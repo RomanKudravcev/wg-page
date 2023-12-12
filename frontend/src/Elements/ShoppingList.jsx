@@ -7,14 +7,13 @@ export default function ShoppingList() {
   useEffect(() => {
     fetch("http://localhost:8080/items")
       .then((response) => response.json())
-      .then((actualData) => setData(actualData));
+      .then((actualData) => setData(actualData.items));
 
     console.log(data);
   }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("ROman isst dick");
 
     try {
       const response = await fetch("http://localhost:8080/items", {
@@ -47,22 +46,22 @@ export default function ShoppingList() {
 
   const items = data?.map((item) => {
     return (
-      <div class="flex items-center ml-3 py-2 gap-4">
+      <div className="flex items-center ml-3 py-2 gap-4">
         <input
           id="item"
           name="item"
           type="checkbox"
           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
         />
-        <p class="font-normal text-gray-700">{item.item}</p>
+        <p className="font-normal text-gray-700">{item.item}</p>
       </div>
     );
   });
 
   return (
-    <div class="grid grid-cols-1  bg-white border border-gray-200 rounded-lg shadow w-full h-2/4">
+    <div className="grid grid-cols-1  bg-white border border-gray-200 rounded-lg shadow w-full h-2/4">
       <a href="#">
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
+        <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
           Einkaufsliste
         </h5>
       </a>

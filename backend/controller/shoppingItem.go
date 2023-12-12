@@ -11,30 +11,37 @@ import (
 //ArticleController ...
 type ShoppingItemController struct{}
 
-var shoppingItem = new(M.ShoppingItem)
+var shoppingItemForm = new(forms.ShoppingItemForm)
+var shoppingItemModel = new(M.ShoppingItemModel)
 
-//Create ...
+//CREATE
 func (ctrl ShoppingItemController) Create(c *gin.Context) {
 	var form forms.CreateShoppingItemForm
 
 
-	id, err := M.Create(form)
-	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "Article could not be created"})
+	if validationErr := c.ShouldBindJSON(&form); validationErr != nil {
+		message := shoppingItemForm.Create(validationErr)
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": message})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"message": "Article created", "id": id})
+	id, err := shoppingItemModel.Create(form)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"message": "ShoppingItem could not be created","error:":err})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "ShoppingItem created", "id": id})
 }
 
 
 // fetchItems retrieves items from the database
 func (ctrl ShoppingItemController) All(c *gin.Context){
-	results, err := M.All()
+	results, err := shoppingItemModel.All()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"Message": "Could not get articles"})
+		c.AbortWithStatusJSON(http.StatusNotAcceptable, gin.H{"Message": "Could not get shoppingItems"})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"results": results})
+	c.JSON(http.StatusOK, gin.H{"items": results})
 }

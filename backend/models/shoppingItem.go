@@ -12,14 +12,20 @@ type ShoppingItem struct {
 	Created string `json:"created"`
 }
 
+type ShoppingItemModel struct{}
+
 //CREATE
-func Create(form forms.CreateShoppingItemForm) (shoppingItemId int64, err error) {
-	err = db.GetDB().QueryRow("INSERT INTO shopping_items (item, bought) VALUES (?, ?)", form.Item, false).Scan(&shoppingItemId)
-	return shoppingItemId, err
-}
+func (m ShoppingItemModel) Create(form forms.CreateShoppingItemForm) (shoppingItemId int64, err error) {
+    result, err := db.GetDB().Exec("INSERT INTO shopping_items (item, bought) VALUES (?, ?)", form.Item, false)
+    if err != nil {
+        return 0, err
+    }
+
+    shoppingItemId, err = result.LastInsertId()
+    return shoppingItemId, err}
 
 //GET ALL
-func All() (shoppingItems []ShoppingItem, err error) {
+func (m ShoppingItemModel) All() (shoppingItems []ShoppingItem, err error) {
 	rows, err := db.GetDB().Query("SELECT id, item, bought, created FROM shopping_items")
 	if err != nil {
 		return nil, err
