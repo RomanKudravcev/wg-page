@@ -44,6 +44,7 @@ func main() {
 	shoppingItem := new(C.ShoppingItemController)
 	router.POST("/items", shoppingItem.Create)
 	router.GET("/items", shoppingItem.All)
+	router.PUT("/items/:id", shoppingItem.Update)
 
 	router.Run(":8080")
 }
