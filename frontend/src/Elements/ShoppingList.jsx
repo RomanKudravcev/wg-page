@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 export default function ShoppingList() {
   const [data, setData] = useState(null);
   const [item, setItem] = useState("");
-  const [editingId, setEditingId] = useState(null); // Track which item is being edited
-  const [editingText, setEditingText] = useState(""); // Track the text being edited
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:8080/items")
@@ -77,29 +77,31 @@ export default function ShoppingList() {
     setEditingText(text);
   };
 
-  const handleBlur = async (id) => {
-    try {
-      const response = await fetch(`http://localhost:8080/items/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ item: editingText }),
-      });
+  const handleBlur = async (id, originalText) => {
+    if (editingText !== originalText) {
+      try {
+        const response = await fetch(`http://localhost:8080/items/${id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ item: editingText }),
+        });
 
-      if (response.ok) {
-        setData(
-          data.map((item) =>
-            item.id === id ? { ...item, item: editingText } : item
-          )
-        );
-        setEditingId(null); // Reset editing state
-      } else {
-        console.error("Error updating item");
+        if (response.ok) {
+          setData(
+            data.map((item) =>
+              item.id === id ? { ...item, item: editingText } : item
+            )
+          );
+        } else {
+          console.error("Error updating item");
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-    } catch (error) {
-      console.error("Error:", error);
     }
+    setEditingId(null); // Reset editing state regardless of whether the text was changed or not
   };
 
   const items = data?.map((item) => (
@@ -117,8 +119,8 @@ export default function ShoppingList() {
           type="text"
           value={editingText}
           onChange={(e) => setEditingText(e.target.value)}
-          onBlur={() => handleBlur(item.id)}
-          className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          onBlur={() => handleBlur(item.id, item.item)}
+          className="block w-full rounded-md border-0 py-1.5 mr-5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           autoFocus
         />
       ) : (
