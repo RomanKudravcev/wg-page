@@ -1,6 +1,3 @@
-include ./backend/.env
-include ./frontend/.env
-
 build-backend:
 	docker build -t $(BACKEND_IMAGE_NAME) ./backend
 
