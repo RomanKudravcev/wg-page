@@ -1,8 +1,8 @@
 pipeline {
-    agent { docker { image 'golang:1.21.5-alpine3.19' } }
+    agent any
     stages {
-        stage('build') {
-            steps {
+        stage('Build') {
+            docker.image('golang:1.19.1-alpine').inside {
                 sh 'go version'
             }
         }
