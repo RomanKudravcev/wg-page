@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"main/db"
 	"main/forms"
 )
@@ -20,9 +21,9 @@ func (m ShoppingItemModel) Create(form forms.CreateShoppingItemForm) (shoppingIt
     if err != nil {
         return 0, err
     }
-
     shoppingItemId, err = result.LastInsertId()
-    return shoppingItemId, err}
+    return shoppingItemId, err
+}
 
 //GET ALL
 func (m ShoppingItemModel) All() (shoppingItems []ShoppingItem, err error) {
@@ -44,4 +45,18 @@ func (m ShoppingItemModel) All() (shoppingItems []ShoppingItem, err error) {
 	}
 
 	return shoppingItems, err
+}
+
+//UPDATE
+func (m ShoppingItemModel) Update(id int64, form forms.CreateShoppingItemForm) (err error) {
+	operation, err := db.GetDB().Exec("UPDATE shopping_items SET item=?, bought=? WHERE id=?", form.Item, form.Bought, id)
+	if err != nil {
+		return err
+	}
+
+	success, _ := operation.RowsAffected()
+	if success == 0 {
+		return errors.New("updated 0 records")
+	}
+	return nil
 }
