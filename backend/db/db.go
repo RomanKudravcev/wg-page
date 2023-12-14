@@ -7,8 +7,6 @@ import (
 	"log"
 	"os"
 	"strings"
-
-	"github.com/joho/godotenv"
 )
 
 var db *sql.DB
@@ -39,14 +37,10 @@ func Close() {
 }
 
 func loadProperties() string{
-	err := godotenv.Load()
-	if err != nil{
-		log.Fatal("Error while loading .env")
-	}
-	username := os.Getenv("USERNAME")
-	password := os.Getenv("PASSWORD")
-	ip := os.Getenv("IP")
-	port := os.Getenv("PORT")
+	username := os.Getenv("DB_USERNAME")
+	password := os.Getenv("DB_PASSWORD")
+	ip := os.Getenv("DB_IP")
+	port := os.Getenv("DB_PORT")
 
 	connectionString := (username+":"+password+"@tcp("+ip+":"+port+")/");
 	fmt.Println(connectionString)
