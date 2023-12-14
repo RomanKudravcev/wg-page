@@ -8,13 +8,13 @@ pipeline {
         DB_PORT_CREDENTIAL = credentials('DB_PORT_CREDENTIAL')
         DATABASE_CREDENTIAL = credentials('DATABASE_CREDENTIAL')
 
-        BACKEND_IMAGE_NAME = "backend"
-        BACKEND_CONTAINER_NAME = "backend_application"
-        BACKEND_PORT = "8080"
+        BACKEND_IMAGE_NAME = 'backend'
+        BACKEND_CONTAINER_NAME = 'backend_application'
+        BACKEND_PORT = '8080'
 
-        FRONTEND_IMAGE_NAME=frontend
-        FRONTEND_CONTAINER_NAME=frontend_application
-        FRONTEND_PORT=80
+        FRONTEND_IMAGE_NAME = 'frontend'
+        FRONTEND_CONTAINER_NAME = 'frontend_application'
+        FRONTEND_PORT = '80'
     }
 
  stages {
