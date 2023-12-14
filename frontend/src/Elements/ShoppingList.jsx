@@ -53,10 +53,12 @@ export default function ShoppingList() {
       });
 
       if (response.ok) {
+        const responseBody = await response.json();
         console.log("Item added successfully");
         setData([
           ...data,
           {
+            id: responseBody.id,
             item: item,
             bought: false,
           },
